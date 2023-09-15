@@ -1,52 +1,78 @@
-export default function App() {
+import { useState } from 'react';
+import Header from './components/Header';
+import Form from './components/Form';
+import GroceryList from './components/GroceryList';
+import Footer from './components/Footer';
+
+
+const groceryItems = [
+  {
+    id: 1,
+    name: 'aerox',
+    quantity: 1,
+    checked: false,
+  },
+  {
+    id: 2,
+    name: 'sonic',
+    quantity: 2,
+    checked: false,
+  },
+  {
+    id: 3,
+    name: 'vario',
+    quantity: 3,
+    checked: false,
+  },
+  {
+    id: 4,
+    name: 'vixion',
+    quantity: 4,
+    checked: false,
+  },
+];
+
+export default function App(item) {
+  const [items, setItems] = useState(groceryItems);
+
+  function handleAddItem(item) {
+    setItems([...items, item]);
+  }
+
+  function handleDeleteItem(id) {
+    setItems((items) => items.filter((item) => item.id !== id));
+  }
+
+  function handleToggleItem(id) {
+    setItems((items) =>
+      items.map((item) =>
+        item.id === id ? { ...item, checked: !item.checked } : item
+      )
+    );
+  }
+
+  function handleClearItems() {
+    setItems([]);
+  }
 
   return (
     <div className="app">
-    <h1>Catatan Belanjaku 📝</h1>
-    <form className="add-form">
-      <h3>Hari ini belanja apa kita?</h3>
-      <div>
-        <select>
-          <option value="1">1</option>
-          <option value="2">2</option>
-          <option value="3">3</option>
-          <option value="4">4</option>
-          <option value="5">5</option>
-        </select>
-        <input type="text" placeholder="nama barang..." />
-      </div>
-      <button>Tambah</button>
-    </form>
-    <div className="list">
-      <ul>
-        <li>
-          <input type="checkbox" />
-          <span>1 Kopi</span>
-          <button>&times;</button>
-        </li>
-        <li>
-          <input type="checkbox" />
-          <span>5 Gula Pasir</span>
-          <button>&times;</button>
-        </li>
-        <li>
-          <input type="checkbox" />
-          <span>3 Air Mineral</span>
-          <button>&times;</button>
-        </li>
-      </ul>
+      <Header />
+      <Form onAddItem={handleAddItem} />
+      <GroceryList
+        items={items}
+        onDeleteItem={handleDeleteItem}
+        onToggleItem={handleToggleItem}
+        onClearItems={handleClearItems}
+      />
+      <Footer items={items} />
     </div>
-    {/* <div className="actions">
-      <select>
-        <option value="input">Urutkan berdasarkan urutan input</option>
-        <option value="name">Urutkan berdasarkan nama barang</option>
-        <option value="checked">Urutkan berdasarkan ceklis</option>
-      </select>
-      <button>Bersihkan Daftar</button>
-    </div>
-    <footer className="stats">Ada 10 barang di daftar belanjaan, 5 barang sudah dibeli (50%)</footer> */}
-  </div>
-  )
+  );
 }
+
+
+
+
+
 
 
